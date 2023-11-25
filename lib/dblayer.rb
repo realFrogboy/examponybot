@@ -41,7 +41,7 @@ class DBLayer
     if rs.nil?
       @db.execute('INSERT INTO users (userid, username, privlevel) VALUES (?, ?, ?)', [tguser, name, priv])
       Logger.print "user #{name} added with priv level #{priv}"
-    else 
+    else
       @db.execute('UPDATE users SET username = ? WHERE userid = ?', [name, tguser])
       Logger.print "user #{name} updated with priv level #{priv}"
     end
@@ -152,6 +152,8 @@ class DBLayer
 
   def n_questions
     rs = @db.get_first_row('SELECT MAX(number) FROM questions')
+    return 0 if rs[0].nil?
+
     rs[0]
   rescue SQLite3::Exception => e
     puts "#{__FILE__}:#{__LINE__}:#{e}"
@@ -161,6 +163,8 @@ class DBLayer
 
   def n_variants
     rs = @db.get_first_row('SELECT MAX(variant) FROM questions')
+    return 0 if rs[0].nil?
+
     rs[0]
   rescue SQLite3::Exception => e
     puts "#{__FILE__}:#{__LINE__}:#{e}"

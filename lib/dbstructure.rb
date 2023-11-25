@@ -87,7 +87,7 @@ class User
   def initialize(dbl, userid, privlevel = nil, username = nil)
     @dbl = dbl
 
-    unless (username.nil? or privlevel.nil?)
+    unless username.nil? or privlevel.nil?
       @id = dbl.add_user(userid, privlevel, username)
       @userid = userid
       @username = username
@@ -96,7 +96,7 @@ class User
     end
 
     user = dbl.get_user_by_id(userid)
-    unless (user.nil?)
+    unless user.nil?
       @id = user[0]
       @userid = user[1]
       @username = user[2]
@@ -143,7 +143,7 @@ class Question
   def initialize(dbl, number, variant, text = nil)
     @dbl = dbl
 
-    unless (text.nil?)
+    unless text.nil?
       @id = dbl.add_question(number, variant, text)
       @number = number
       @variant = variant
@@ -152,7 +152,7 @@ class Question
     end
 
     question = dbl.get_question(number, variant)
-    unless (question.nil?)
+    unless question.nil?
       @id = question[0]
       @number = question[1]
       @variant = question[2]
@@ -238,8 +238,8 @@ class Answer
 
   def initialize(dbl, uqid, text = nil)
     @dbl = dbl
-    
-    unless (text.nil?)
+
+    unless text.nil?
       @id = dbl.record_answer(uqid, text)
       @uqid = uqid
       @text = text
@@ -247,7 +247,7 @@ class Answer
     end
 
     answer = dbl.uqid_to_answer(uqid)
-    unless (answer.nil?)
+    unless answer.nil?
       @id = answer[0]
       @uqid = answer[1]
       @text = answer[2]
@@ -300,7 +300,7 @@ class Review
   def initialize(dbl, revid, grade = nil, text = nil)
     @dbl = dbl
 
-    unless (grade.nil? or text.nil?)
+    unless grade.nil? or text.nil?
       @id = dbl.record_review(revid, grade, text)
       @revid = revid
       @grade = grade
@@ -309,14 +309,14 @@ class Review
     end
 
     review = dbl.query_review(revid)
-    unless (review.nil?)
+    unless review.nil?
       @id = review[0]
       @revid = review[1]
       @grade = review[2]
       @text = review[3]
       return
     end
-    
+
     raise DBLayerError, 'unregistered review'
   end
 

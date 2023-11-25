@@ -43,7 +43,7 @@ class Handler
         TXT
         @api.send_message(chat_id: @tguser.id, text: txt)
       end
-      res && meth == 'exit' ? true : false
+      (res && meth == 'exit')
     end
 
     def register(name = '')
@@ -166,7 +166,7 @@ class Handler
 
       nn = @dbl.n_questions
       nv = @dbl.n_variants
-      return unless nn * nv != allq.length
+      return if nn * nv == allq.length
 
       @api.send_message(chat_id: @tguser.id, text: "Warning: #{nn} * #{nv} != #{allq.length}")
     end
@@ -342,7 +342,7 @@ class Handler
         @api.send_message(chat_id: @tguser.id, text: "You don't have this question yet.")
         return
       end
-      
+
       Answer.new(@dbl, uqst.id, t)
       @api.send_message(chat_id: @tguser.id, text: "Answer recorded to #{uqst.id}")
     end
