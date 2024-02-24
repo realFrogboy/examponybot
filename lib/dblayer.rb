@@ -41,7 +41,7 @@ class DBLayer
     if rs.nil?
       @db.execute('INSERT INTO users (userid, username, privlevel) VALUES (?, ?, ?)', [tguser, name, priv])
       Logger.print "user #{name} added with priv level #{priv}"
-    else 
+    else
       @db.execute('UPDATE users SET username = ? WHERE userid = ?', [name, tguser])
       Logger.print "user #{name} updated with priv level #{priv}"
     end
@@ -182,6 +182,7 @@ class DBLayer
         rs = @db.get_first_row('SELECT * FROM exams WHERE name = ?', [name])
       else
         Logger.print 'sorry only one exam supported'
+        rs = @db.get_first_row("SELECT * FROM exams")
       end
     else
       Logger.print "exam #{name} already exists"
@@ -418,7 +419,7 @@ class DBLayer
       Logger.print row
       next if row[1].nil? or row[2].nil? or row[3].nil?
 
-      reviews.append Review.new(row[0], row[1], row[2], row[3])
+      reviews.append Review.new(self, row[1], row[2], row[3])
     end
     reviews
   end

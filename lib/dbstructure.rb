@@ -108,23 +108,28 @@ class User
   end
 
   def nth_question(examid, n)
-    @dbl.user_nth_question(examid, @userid, n)
+    @dbl.user_nth_question(examid, @id, n)
   end
 
   def n_reviews
-    @dbl.nreviews(@userid)
+    @dbl.nreviews(@id)
+  end
+
+  def all_questions
+    @dbl.user_all_questions(@id)
   end
 
   def all_answers
     @dbl.user_all_answers(@id)
   end
 
-  def to_userquestion(revid)
-    @dbl.urid_to_uqid(@userid, revid)
+  # Checks if userreview was assigned to this user
+  def is_assigned_userreview(urid)
+    (@dbl.urid_to_uqid(@id, urid).nil?) ? false : true
   end
 
   def is_priviledged
-    @privlevel == 0
+    @privlevel == USER_STATE[:priviledged]
   end
 
   private def to_s
@@ -238,7 +243,7 @@ class Answer
 
   def initialize(dbl, uqid, text = nil)
     @dbl = dbl
-    
+
     unless (text.nil?)
       @id = dbl.record_answer(uqid, text)
       @uqid = uqid
@@ -316,7 +321,7 @@ class Review
       @text = review[3]
       return
     end
-    
+
     raise DBLayerError, 'unregistered review'
   end
 

@@ -221,7 +221,7 @@ class Handler
         return
       end
 
-      nn = @dbl.n_questions
+      @dbl.n_questions
 
       astud = allu
       arev1 = allu.rotate(1)
@@ -342,7 +342,7 @@ class Handler
         @api.send_message(chat_id: @tguser.id, text: "You don't have this question yet.")
         return
       end
-      
+
       Answer.new(@dbl, uqst.id, t)
       @api.send_message(chat_id: @tguser.id, text: "Answer recorded to #{uqst.id}")
     end
@@ -418,8 +418,7 @@ class Handler
       end
 
       dbuser = User.new(@dbl, @tguser.id)
-      uqid = dbuser.to_userquestion(urid)
-      if uqid.nil?
+      if not dbuser.is_assigned_userreview(urid)
         @api.send_message(chat_id: @tguser.id, text: "#{urid} is not your review assignment")
         return
       end
@@ -439,8 +438,7 @@ class Handler
       urid = m[1].to_i
 
       dbuser = User.new(@dbl, @tguser.id)
-      uqid = dbuser.to_userquestion(urid)
-      if uqid.nil?
+      if not dbuser.is_assigned_userreview(urid)
         @api.send_message(chat_id: @tguser.id, text: "#{urid} is not your review assignment")
         return
       end
